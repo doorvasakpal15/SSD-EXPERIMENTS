@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Secure Login</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            padding: 50px;
+        }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            background: #eee;
+        }
+
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ffe0e0;
+            border: 2px solid red;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Secure Login</h1>
+
+    <form method="POST">
+
+        <label>Username:</label>
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter username"
+        >
+
+        <label>Password:</label>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+
+    <!-- SQL Injection Alert -->
+
+    {% if alert %}
+
+        <script>
+            alert("SQL INJECTION ATTEMPT DETECTED!\n\nAttack blocked by secure coding.");
+        </script>
+
+        <div class="alert">
+            <strong> SQL INJECTION ATTEMPT DETECTED!</strong>
+
+            <br><br>
+
+             Malicious input detected and blocked.
+        </div>
+
+    {% endif %}
+
+
+    <!-- Normal Login Message -->
+
+    {% if message %}
+
+        <div class="message">
+            <strong>{{ message }}</strong>
+        </div>
+
+    {% endif %}
+
+
+</div>
+
+</body>
+
+</html>

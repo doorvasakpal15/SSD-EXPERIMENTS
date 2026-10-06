@@ -1,0 +1,2 @@
+2026-10-06 20:05:51,176 - ERROR - Invalid operation: Division by zero
+2026-10-06 20:06:07,744 - ERROR - Invalid operation: could not convert string to float: 'dd'
