@@ -1,0 +1,637 @@
+https://www.sonarsource.com/products/sonarqube/downloads/?utm_source=chatgpt.com
+
+# EXPERIMENT 8 — Analyze Code Using SonarQube and Generate Reports
+
+### Aim
+**To analyze source code using SonarQube and generate a code-quality/security analysis report.**
+
+---
+
+# PART A — INSTALL SONARQUBE
+
+### Step 1 — Download SonarQube
+
+1. Open the SonarQube download page.
+2. Select **Community Build**.
+3. Click **Download for Free**.
+4. Download the **Windows ZIP**.
+
+We used:
+
+```text
+sonarqube-26.9.0.129388.zip
+```
+
+---
+
+### Step 2 — Extract the ZIP
+
+**Do NOT click Run.**
+
+Right-click the ZIP → **Extract All**.
+
+Extract it somewhere convenient, for example:
+
+```text
+C:\Users\HP\Desktop\
+```
+
+After extraction, you should have:
+
+```text
+C:\Users\HP\Desktop\sonarqube-26.9.0.129388
+```
+
+Inside it:
+
+```text
+sonarqube-26.9.0.129388
+│
+├── bin
+├── conf
+├── data
+├── elasticsearch
+├── extensions
+├── lib
+├── logs
+└── ...
+```
+
+---
+
+# PART B — START SONARQUBE
+
+### Step 3 — Go to the Windows startup folder
+
+Open:
+
+```text
+sonarqube-26.9.0.129388
+    ↓
+bin
+    ↓
+windows-x86-64
+```
+
+Inside you will find:
+
+```text
+StartSonar.bat
+```
+
+---
+
+### Step 4 — Start SonarQube
+
+Double-click:
+
+```text
+StartSonar.bat
+```
+
+A black **CMD window** opens.
+
+### IMPORTANT
+
+**Do NOT close this CMD window.**
+
+It is running your SonarQube server.
+
+Wait until you see lines similar to:
+
+```text
+Process[es] is up
+```
+
+and:
+
+```text
+Launch process[WEB_SERVER]
+```
+
+The startup may take a couple of minutes.
+
+---
+
+# PART C — OPEN SONARQUBE
+
+### Step 5 — Open SonarQube in Chrome
+
+Open:
+
+```text
+http://localhost:9000
+```
+
+### Why localhost:9000?
+
+- `localhost` = your own computer
+- `9000` = SonarQube's web server port
+
+So you're opening the SonarQube server running on your PC.
+
+---
+
+# PART D — LOGIN
+
+### Step 6 — Login
+
+Use the default local account:
+
+```text
+Username: admin
+Password: admin
+```
+
+**Do not use your college email.**
+
+After login, SonarQube opens.
+
+---
+
+# PART E — CREATE THE PROJECT
+
+### Step 7 — Create a local project
+
+Go to:
+
+**Projects → Create Project**
+
+Choose:
+
+**Create a local project**
+
+Enter:
+
+### Project display name
+
+```text
+SSD Experiment 8
+```
+
+### Project key
+
+```text
+SSD-Experiment-8
+```
+
+### Main branch name
+
+Leave:
+
+```text
+main
+```
+
+Click **Next**.
+
+---
+
+# PART F — NEW CODE SETTING
+
+### Step 8 — Set up new code
+
+You'll see:
+
+**Set up new code for project**
+
+Choose:
+
+```text
+Follows the instance's default
+```
+
+It showed:
+
+```text
+Current default: Previous version
+```
+
+Leave it as it is.
+
+Click **Create/Continue**.
+
+You should then see:
+
+> **Your project has been created.**
+
+---
+
+# PART G — CHOOSE LOCAL ANALYSIS
+
+### Step 9 — Select local analysis
+
+SonarQube will ask:
+
+> How do you want to analyze your repository?
+
+Choose:
+
+### **Locally**
+
+Do **not** choose:
+
+- Jenkins
+- GitHub Actions
+- GitLab
+- Bitbucket
+- Azure Pipelines
+
+because we're doing the practical directly from your Windows PC.
+
+---
+
+# PART H — CREATE YOUR CODE
+
+Since you didn't have a specific Experiment 8 program, we created a small Python program for analysis.
+
+### Step 10 — Create the project folder
+
+In VS Code:
+
+```text
+SSD EXP 8
+```
+
+Inside:
+
+```text
+SSD EXP 8
+└── sonar_demo.py
+```
+
+### Step 11 — Put this code in `sonar_demo.py`
+
+```python
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+PASSWORD = "admin123"
+
+
+def divide_numbers(a, b):
+    try:
+        return a / b
+    except Exception:
+        return None
+
+
+def check_user(username):
+    if username == "":
+        print("Username is empty")
+    else:
+        print("Welcome " + username)
+
+
+def main():
+    username = input("Enter username: ")
+    result = divide_numbers(10, 0)
+
+    if result is None:
+        logging.error("Division failed")
+
+    check_user(username)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### Important
+
+You **do not need to run this program**.
+
+SonarQube analyzes the source code itself.
+
+---
+
+# PART I — INSTALL THE PYTHON SCANNER
+
+### Step 12 — Open VS Code terminal
+
+Make sure the terminal is inside:
+
+```text
+C:\Users\HP\Desktop\SSD PRACTICAL + VIVA\SSD EXP 8
+```
+
+Run:
+
+```powershell
+pip install pysonar
+```
+
+You should see installation messages and eventually the package installed successfully.
+
+---
+
+# PART J — GENERATE A PROJECT TOKEN
+
+### Step 13 — Return to SonarQube
+
+On:
+
+**Analyze your project → Locally**
+
+You'll see:
+
+> Provide a token
+
+Choose:
+
+**Generate a project token**
+
+Token name can be:
+
+```text
+Analyze "SSD Experiment 8"
+```
+
+Expiration:
+
+```text
+30 days
+```
+
+Click:
+
+**Generate**
+
+### ⚠️ IMPORTANT
+
+Copy the token immediately.
+
+**Never put your token in screenshots, reports, GitHub, or send it to someone.**
+
+If a token has accidentally been exposed, revoke it and generate a new one.
+
+---
+
+# PART K — RUN THE ANALYSIS
+
+### Step 14 — Run `pysonar`
+
+Your terminal should already be in:
+
+```text
+SSD EXP 8
+```
+
+Run:
+
+```powershell
+pysonar --sonar-host-url=http://localhost:9000 --sonar-token="YOUR_TOKEN_HERE" --sonar-project-key=SSD-Experiment-8
+```
+
+Replace:
+
+```text
+YOUR_TOKEN_HERE
+```
+
+with your generated token.
+
+### Example format
+
+```powershell
+pysonar --sonar-host-url=http://localhost:9000 --sonar-token="PASTE_TOKEN_HERE" --sonar-project-key=SSD-Experiment-8
+```
+
+**Don't share the actual token.**
+
+---
+
+# PART L — VERIFY SUCCESS
+
+### Step 15 — Check the terminal
+
+You want to see:
+
+```text
+INFO: Analysis report compressed
+INFO: Analysis report uploaded
+INFO: ANALYSIS SUCCESSFUL
+```
+
+You also received:
+
+```text
+SonarScanner Engine completed successfully
+```
+
+This means the code was successfully analyzed. ✅
+
+---
+
+# PART M — OPEN THE DASHBOARD
+
+### Step 16 — Open the analysis results
+
+SonarQube gives you the dashboard address:
+
+```text
+http://localhost:9000/dashboard?id=SSD-Experiment-8
+```
+
+Open it in Chrome.
+
+Wait a few seconds for SonarQube to process the analysis.
+
+---
+
+# PART N — FINAL RESULTS
+
+Your final dashboard showed:
+
+### Project
+
+```text
+SSD Experiment 8
+```
+
+### Analysis
+
+```text
+42 Lines of Code
+```
+
+### Quality Gate
+
+```text
+PASSED
+```
+
+### Security
+
+```text
+0 Open Issues
+```
+
+### Reliability
+
+```text
+0 Open Issues
+```
+
+### Maintainability
+
+```text
+0 Open Issues
+```
+
+### Coverage
+
+```text
+0.0%
+```
+
+### Duplication
+
+```text
+100%
+```
+
+The analysis history also showed:
+
+```text
+First analysis
+0 Issues
+0.0% Coverage
+100% Duplications
+Quality gate: Passed
+```
+
+So the analysis itself was **successful**.
+
+---
+
+# 📸 WHAT TO SHOW YOUR TEACHER
+
+You don't need to show every installation screen.
+
+Show these:
+
+### 1. SonarQube running
+
+CMD:
+
+```text
+Process[es] is up
+Launch process[WEB_SERVER]
+```
+
+### 2. Your code
+
+`sonar_demo.py` in VS Code.
+
+### 3. Scanner execution
+
+Terminal:
+
+```text
+ANALYSIS SUCCESSFUL
+```
+
+### 4. SonarQube dashboard
+
+Show:
+
+```text
+SSD Experiment 8
+42 Lines of Code
+Quality Gate: PASSED
+```
+
+### 5. Analysis metrics
+
+Show:
+
+```text
+Security
+Reliability
+Maintainability
+Coverage
+Duplications
+```
+
+That's enough to demonstrate the practical.
+
+---
+
+# 🧠 VIVA — HOW TO EXPLAIN THE EXPERIMENT
+
+### What is SonarQube?
+
+> **SonarQube is a code-quality and security analysis platform that analyzes source code and detects bugs, vulnerabilities, code smells and other quality issues.**
+
+### What did you do?
+
+> **I created a Python project, configured it as a local SonarQube project, installed the Python scanner, analyzed the source code and viewed the results on the SonarQube dashboard.**
+
+### What is SonarScanner?
+
+> **SonarScanner is the tool that analyzes the source code and sends the analysis report to the SonarQube server.**
+
+### What is Quality Gate?
+
+> **A Quality Gate is a set of conditions used to determine whether the analyzed code meets the required quality standards.**
+
+### What does PASSED mean?
+
+> **It means the project satisfied the configured Quality Gate conditions.**
+
+### What can SonarQube detect?
+
+Remember:
+
+**B-V-C-S**
+
+- **B** → Bugs
+- **V** → Vulnerabilities
+- **C** → Code Smells
+- **S** → Security Hotspots
+
+### Why did we use localhost?
+
+> **Because SonarQube was running locally on my own computer rather than on a remote server.**
+
+---
+
+# ⭐ YOUR COMPLETE FLOW TO MEMORIZE
+
+```text
+Download SonarQube
+        ↓
+Extract ZIP
+        ↓
+StartSonar.bat
+        ↓
+localhost:9000
+        ↓
+Login admin/admin
+        ↓
+Create Local Project
+        ↓
+SSD Experiment 8
+        ↓
+Create Python Code
+        ↓
+pip install pysonar
+        ↓
+Generate Project Token
+        ↓
+Run pysonar
+        ↓
+ANALYSIS SUCCESSFUL
+        ↓
+Open SonarQube Dashboard
+        ↓
+View Quality Metrics
+        ↓
+Generate/Show Report
+```
+
+## One-line practical conclusion
+
+> **Thus, the Python source code was successfully analyzed using SonarQube, and the resulting code-quality and security metrics were generated and displayed on the SonarQube dashboard.**

@@ -1,0 +1,717 @@
+
+# EXPERIMENT 10 — CI/CD Pipeline + Security Tool
+
+### Aim
+**To create a CI/CD pipeline and integrate security tools.**
+
+### Name
+**Doorva Sakpal**
+
+### Tool Used
+- VS Code
+- Python
+- Git
+- GitHub
+- GitHub Actions
+- Bandit
+
+### Project
+**SSD-EXP-10-CICD**
+
+---
+
+# 1. Create the project folder
+
+Create this folder on your Desktop:
+
+```text
+SSD EXP 10
+```
+
+Open the folder in **VS Code**.
+
+Initial structure:
+
+```text
+SSD EXP 10
+```
+
+---
+
+# 2. Create `app.py`
+
+Inside `SSD EXP 10`, create:
+
+```text
+app.py
+```
+
+Paste:
+
+```python
+import subprocess
+
+def login(username, password):
+    if username == "admin" and password == "admin123":
+        return "Login successful"
+    return "Invalid credentials"
+
+def run_command(command):
+    return subprocess.call(command, shell=True)
+
+if __name__ == "__main__":
+    print(login("admin", "admin123"))
+```
+
+Save the file.
+
+---
+
+# 3. Run the Python program
+
+Open the VS Code terminal:
+
+```powershell
+python app.py
+```
+
+Expected output:
+
+```text
+Login successful
+```
+
+✅ This proves the application works.
+
+---
+
+# 4. Initialize Git
+
+In the same terminal:
+
+```powershell
+git init
+```
+
+Expected:
+
+```text
+Initialized empty Git repository
+```
+
+---
+
+# 5. Configure your Git name
+
+Since your name is **Doorva Sakpal**:
+
+```powershell
+git config --global user.name "Doorva Sakpal"
+```
+
+Set your GitHub email:
+
+```powershell
+git config --global user.email "YOUR_GITHUB_EMAIL"
+```
+
+Replace `YOUR_GITHUB_EMAIL` with the email associated with your GitHub account.
+
+---
+
+# 6. Create GitHub repository
+
+Go to:
+
+[GitHub](https://github.com?utm_source=chatgpt.com)
+
+Log in to your account.
+
+Click:
+
+**+ → New repository**
+
+Enter:
+
+```text
+Repository name:
+SSD-EXP-10-CICD
+```
+
+Select:
+
+```text
+Public
+```
+
+Then click:
+
+**Create repository**
+
+Your repository is:
+
+```text
+doorvasakpal15-tech/SSD-EXP-10-CICD
+```
+
+---
+
+# 7. Connect your local project to GitHub
+
+In VS Code terminal:
+
+```powershell
+git remote add origin https://github.com/doorvasakpal15-tech/SSD-EXP-10-CICD.git
+```
+
+Then:
+
+```powershell
+git branch -M main
+```
+
+---
+
+# 8. Add `app.py`
+
+```powershell
+git add app.py
+```
+
+---
+
+# 9. Create first commit
+
+```powershell
+git commit -m "Initial commit"
+```
+
+Your commit will show your name:
+
+```text
+Doorva Sakpal
+```
+
+---
+
+# 10. Push to GitHub
+
+```powershell
+git push -u origin main
+```
+
+Refresh your GitHub repository.
+
+You should see:
+
+```text
+SSD-EXP-10-CICD
+
+app.py
+```
+
+✅ Your application is now on GitHub.
+
+---
+
+# 11. Create GitHub Actions folders
+
+Back in VS Code, inside `SSD EXP 10`, create:
+
+```text
+.github
+```
+
+Inside `.github`, create:
+
+```text
+workflows
+```
+
+Your structure should be:
+
+```text
+SSD EXP 10
+│
+├── app.py
+│
+└── .github
+    └── workflows
+```
+
+---
+
+# 12. Create the workflow file
+
+Inside:
+
+```text
+.github/workflows
+```
+
+create:
+
+```text
+security.yaml
+```
+
+### VERY IMPORTANT
+
+The structure must be:
+
+```text
+.github
+└── workflows
+    └── security.yaml
+```
+
+NOT:
+
+```text
+.github
+└── workflows
+    └── security.yml
+        └── security.yaml
+```
+
+---
+
+# 13. Add the CI/CD workflow
+
+Open `security.yaml`.
+
+Paste this:
+
+```yaml
+name: Security CI Pipeline
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit Security Scan
+        run: bandit -r .
+```
+
+Save it.
+
+### ⚠️ MOST IMPORTANT LINE
+
+Make sure it is:
+
+```yaml
+run: bandit -r .
+```
+
+The `.` means **scan the current repository**.
+
+---
+
+# 14. Check your final local structure
+
+Your VS Code Explorer should show:
+
+```text
+SSD EXP 10
+│
+├── .github
+│   └── workflows
+│       └── security.yaml
+│
+└── app.py
+```
+
+✅ This is the correct structure.
+
+---
+
+# 15. Check Git status
+
+Run:
+
+```powershell
+git status
+```
+
+You should see `security.yaml` as a new file.
+
+---
+
+# 16. Add everything
+
+```powershell
+git add .
+```
+
+---
+
+# 17. Commit the CI/CD workflow
+
+```powershell
+git commit -m "Add security CI pipeline"
+```
+
+---
+
+# 18. Push the workflow to GitHub
+
+```powershell
+git push
+```
+
+GitHub will automatically detect the workflow.
+
+---
+
+# 19. Open GitHub Actions
+
+Go to your repository:
+
+[SSD-EXP-10-CICD](https://github.com/doorvasakpal15-tech/SSD-EXP-10-CICD?utm_source=chatgpt.com)
+
+Click:
+
+**Actions**
+
+You should see:
+
+```text
+Security CI Pipeline
+```
+
+And a workflow run.
+
+---
+
+# 20. Open the workflow run
+
+Click the latest run.
+
+You should see:
+
+```text
+security-scan
+```
+
+Click it.
+
+The pipeline performs:
+
+```text
+Checkout source code
+        ↓
+Set up Python
+        ↓
+Install Bandit
+        ↓
+Run Bandit Security Scan
+```
+
+---
+
+# 21. Bandit scans your code
+
+Bandit analyzes:
+
+```text
+app.py
+```
+
+Your code contains:
+
+```python
+subprocess.call(command, shell=True)
+```
+
+Bandit can identify this as a security problem.
+
+Therefore you may see:
+
+```text
+Low: 2
+Medium: 0
+High: 1
+```
+
+and:
+
+```text
+Error: Process completed with exit code 1.
+```
+
+### 🚨 THIS IS NOT A PROBLEM
+
+The important distinction is:
+
+### First attempt ❌
+
+```text
+bandit -r
+```
+
+Bandit couldn't scan because no target was specified.
+
+### Correct attempt ✅
+
+```text
+bandit -r .
+```
+
+Bandit successfully scanned the repository and **found security vulnerabilities**.
+
+So the red ❌ now means:
+
+> **Security vulnerabilities were detected by the CI security tool.**
+
+That is actually useful for your practical demonstration.
+
+---
+
+# 22. Final workflow
+
+Your complete CI/CD process is:
+
+```text
+        app.py
+          ↓
+        Git
+          ↓
+       GitHub
+          ↓
+   GitHub Actions
+          ↓
+   Checkout Code
+          ↓
+    Setup Python
+          ↓
+    Install Bandit
+          ↓
+     Run Bandit
+          ↓
+ Security Issues Found
+```
+
+---
+
+# 23. What you should show your teacher
+
+For the practical, show these **5 things**.
+
+### ① Python application
+
+Show:
+
+```python
+def login(username, password):
+```
+
+and:
+
+```python
+subprocess.call(command, shell=True)
+```
+
+---
+
+### ② GitHub repository
+
+Show:
+
+```text
+SSD-EXP-10-CICD
+```
+
+with:
+
+```text
+.github/workflows/security.yaml
+app.py
+```
+
+---
+
+### ③ Workflow YAML
+
+Show:
+
+```yaml
+on:
+  push:
+  pull_request:
+```
+
+Then:
+
+```yaml
+- name: Install Bandit
+  run: pip install bandit
+```
+
+Then:
+
+```yaml
+- name: Run Bandit Security Scan
+  run: bandit -r .
+```
+
+---
+
+### ④ GitHub Actions
+
+Show:
+
+```text
+Security CI Pipeline
+```
+
+and:
+
+```text
+security-scan
+```
+
+---
+
+### ⑤ Bandit result
+
+Show:
+
+```text
+Total issues (by severity):
+
+Low: 2
+Medium: 0
+High: 1
+```
+
+This proves that your security tool actually detected issues.
+
+---
+
+# 24. What to say to the teacher
+
+You can memorize this:
+
+> **"My name is Doorva Sakpal. In this experiment, I created a CI/CD pipeline and integrated Bandit as a security tool. I first created a Python application and pushed it to GitHub. Then I created a GitHub Actions workflow that automatically runs whenever code is pushed or a pull request is created. The workflow checks out the source code, sets up Python, installs Bandit, and performs a security scan. Bandit performs static analysis and identifies security vulnerabilities in the Python code."**
+
+---
+
+# 25. Important viva answers
+
+### What is CI/CD?
+
+**CI** means Continuous Integration and **CD** means Continuous Delivery/Deployment. They automate software integration, testing, security checking, and delivery.
+
+### What is GitHub Actions?
+
+GitHub Actions is a GitHub automation and CI/CD platform used to execute workflows automatically.
+
+### What is Bandit?
+
+Bandit is a **Python static security analysis tool** that detects common security vulnerabilities.
+
+### Why did you use Bandit?
+
+To automatically identify insecure coding practices in Python code during the CI process.
+
+### What is a workflow?
+
+A YAML file containing instructions for GitHub Actions to execute automatically.
+
+### Why `push`?
+
+To run the security pipeline whenever code is pushed to GitHub.
+
+### Why `pull_request`?
+
+To check code changes before they are merged.
+
+### What does this mean?
+
+```yaml
+runs-on: ubuntu-latest
+```
+
+It tells GitHub Actions to execute the job on an Ubuntu runner.
+
+### What does this do?
+
+```yaml
+uses: actions/checkout@v4
+```
+
+It checks out the repository source code into the GitHub Actions runner.
+
+### What does this do?
+
+```yaml
+run: pip install bandit
+```
+
+It installs Bandit in the CI environment.
+
+### What does this do?
+
+```yaml
+run: bandit -r .
+```
+
+It recursively scans the repository using Bandit.
+
+---
+
+# ⭐ FINAL RESULT FOR YOUR JOURNAL
+
+### Final folder structure
+
+```text
+SSD EXP 10
+│
+├── app.py
+│
+└── .github
+    └── workflows
+        └── security.yaml
+```
+
+### GitHub repository
+
+```text
+doorvasakpal15-tech/SSD-EXP-10-CICD
+```
+
+### CI/CD pipeline
+
+```text
+GitHub Push
+     ↓
+GitHub Actions
+     ↓
+Python Setup
+     ↓
+Bandit Installation
+     ↓
+Security Scan
+     ↓
+Security Vulnerabilities Reported
+```
+
+### Conclusion
+
+> **The CI/CD pipeline was successfully created using GitHub Actions, and Bandit was integrated to automatically perform static security analysis whenever code changes were pushed to the repository.**
